@@ -1,0 +1,9 @@
+# Default template
+template: "default"
+
+# Databases
+databases:
+  - name: "test1"
+    url: "mysql://root:12345678@localhost:3306/test1"
+  - name: "test2"
+    url: "mysql://root:12345678@localhost:3306/test2"

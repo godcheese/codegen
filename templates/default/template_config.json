@@ -1,0 +1,82 @@
+{
+  "vars": [
+    {
+      "key": "author",
+      "value": "godcheese [godcheese@outlook.com]"
+    },
+    {
+      "key": "module",
+      "value": "example"
+    },
+    {
+      "key": "current_package",
+      "value": "com.test"
+    },
+    {
+      "key": "table_name",
+      "value": "{{ table.table_name | trim_start_matches(pat='t_') }}"
+    },
+    {
+      "key": "table_comment",
+      "value": "{{ table.table_comment | trim_start_matches(pat='t_') | trim_end_matches(pat='表') | safe }}"
+    },
+    {
+      "key": "create_date",
+      "value": "{{ now() | date(format='%Y-%m-%d', timezone='Asia/Shanghai') }}"
+    }
+  ],
+  "items": [
+    {
+      "template_filename": "controller.tpl",
+      "output_path": "{{ current_run_path }}\\{{ module }}\\controller",
+      "output_filename": "{{ table_name | upper_camel }}Controller.java"
+    },
+    {
+      "template_filename": "mapper.tpl",
+      "output_path": "{{ current_run_path }}\\{{ module }}\\mapper",
+      "output_filename": "{{ table_name | upper_camel }}Mapper.java"
+    },
+    {
+      "template_filename": "entity.tpl",
+      "output_path": "{{ current_run_path }}\\{{ module }}\\entity",
+      "output_filename": "{{ table_name | upper_camel }}Entity.java"
+    },
+    {
+      "template_filename": "mapperxml.tpl",
+      "output_path": "{{ current_run_path }}\\{{ module }}\\mapperxml",
+      "output_filename": "{{ table_name | upper_camel }}Mapper.xml"
+    },
+    {
+      "template_filename": "service.tpl",
+      "output_path": "{{ current_run_path }}\\{{ module }}\\service",
+      "output_filename": "{{ table_name | upper_camel }}Service.java"
+    },
+    {
+      "template_filename": "serviceimpl.tpl",
+      "output_path": "{{ current_run_path }}\\{{ module }}\\service\\impl",
+      "output_filename": "{{ table_name | upper_camel }}ServiceImpl.java"
+    },
+    {
+      "template_filename": "dto\\adddto.tpl",
+      "output_path": "{{ current_run_path }}\\{{ module }}\\dto",
+      "output_filename": "Add{{ table_name | upper_camel }}DTO.java"
+    },
+    {
+      "template_filename": "dto\\updatedto.tpl",
+      "output_path": "{{ current_run_path }}\\{{ module }}\\dto",
+      "output_filename": "Update{{ table_name | upper_camel }}DTO.java"
+    }, {
+      "template_filename": "dto\\listdto.tpl",
+      "output_path": "{{ current_run_path }}\\{{ module }}\\dto",
+      "output_filename": "List{{ table_name | upper_camel }}DTO.java"
+    }, {
+      "template_filename": "dto\\pagedto.tpl",
+      "output_path": "{{ current_run_path }}\\{{ module }}\\dto",
+      "output_filename": "Page{{ table_name | upper_camel }}DTO.java"
+    }, {
+      "template_filename": "vo\\vo.tpl",
+      "output_path": "{{ current_run_path }}\\{{ module }}\\vo",
+      "output_filename": "{{ table_name | upper_camel }}VO.java"
+    }
+  ]
+}

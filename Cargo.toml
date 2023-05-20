@@ -1,0 +1,16 @@
+[package]
+name = "codegen-rust"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+mysql = "23.0.1"
+lazy_static = "1.4.0"
+serde = { version = "1.0.162", features = ["derive"] }
+serde_yaml = "0.9.21"
+serde_json = "1.0.96"
+clap = { version = "4.2.4", features = ["derive"] }
+tera = "1.18.1"
+urlencoding = "2.1.2"
