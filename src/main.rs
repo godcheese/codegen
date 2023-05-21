@@ -25,7 +25,7 @@ struct Cli {
     #[arg(short = 'd', long = "databases")]
     databases: Option<String>,
 
-    /// Table names, example: test-tb1,test-tb2 , "*" assign all table
+    /// Table names, example: test-tb,test-tb2 , "*" assign all table
     #[arg(short = 't', long = "tables")]
     tables: Option<String>,
 
