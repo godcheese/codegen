@@ -8,7 +8,7 @@ Rust 实现的代码生成器
 ./codegen --help
 
 # generate some code
-./codegen --databases=test-db --tables=test-tb
+./codegen --databases=test-db,test-db2 --tables=test-tb,test-db2
 
 # generate all code
 ./codegen --databases=* --tables=*
