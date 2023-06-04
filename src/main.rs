@@ -17,7 +17,7 @@ mod model;
 mod util;
 mod tera_filter;
 
-/// Simple program to greet a person
+/// Codegen cli
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 struct Cli {
@@ -183,9 +183,11 @@ pub fn get_database(database_name: &str, table_name_vec: &Vec<String>) -> Databa
         name: String::from(""),
         tables: vec![],
     };
+    println!("Loading config...");
     let config = get_config();
     for config_database in config.databases {
         if database_name == config_database.name {
+            println!("Connecting database...");
             let mut connect = get_db_connect(&config_database.url);
             let current_database_opt = get_database_info(&mut connect);
             let database_name = current_database_opt.unwrap().name.to_string();
