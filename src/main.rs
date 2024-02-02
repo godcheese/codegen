@@ -189,8 +189,8 @@ pub fn get_database(database_name: &str, table_name_vec: &Vec<String>) -> Databa
         if database_name == config_database.name {
             println!("Connecting database...");
             let mut connect = get_db_connect(&config_database.url);
-            let current_database_opt = get_database_info(&mut connect);
-            let database_name = current_database_opt.unwrap().name.to_string();
+            let current_database_option = get_database_info(&mut connect);
+            let database_name = current_database_option.unwrap().name.to_string();
             database_info.name = database_name.clone();
             let table_vec_opt = get_database_tables(&mut connect, &database_name, table_name_vec);
             if !table_vec_opt.is_none() {
@@ -215,19 +215,25 @@ pub fn get_database_info(conn: &mut PooledConn) -> Option<DatabaseInfo> {
         Ok(result) => {
             result
         }
-        Err(_) => {
-            None
+        Err(error) => {
+            panic!("{}", error)
         }
     }
 }
 
 /// get_database_tables
 pub fn get_database_tables(conn: &mut PooledConn, database_name: &str, table_name_vec: &Vec<String>) -> Option<Vec<DatabaseTable>> {
+    let table_name_vec2 :Vec<String>= table_name_vec.iter().map(|table_name| format!("'{table_name}'")).collect();
     let query_result;
-    if table_name_vec.len() > 0 {
-        query_result = conn.exec_map("select table_name, table_comment from information_schema.tables where table_schema = :database_name and table_name in (:table_names);",
-                                     params! { database_name, "table_names" => table_name_vec.join(",") },
-                                     |(table_name, table_comment)| DatabaseTable { table_name, table_comment, fields: vec![] });
+    if table_name_vec2.len() > 0 {
+        let table_names = table_name_vec2.join(",");
+        let sql = format!("
+        select table_name, table_comment
+        from information_schema.tables
+        where table_schema = '{database_name}'
+        and table_name in ({table_names});");
+        query_result = conn.query_map(sql, |(table_name, table_comment)|
+            DatabaseTable { table_name, table_comment, fields: vec![] });
     } else {
         query_result = conn.exec_map("select table_name, table_comment from information_schema.tables where table_schema = :database_name;",
                                      params! { database_name },
@@ -237,8 +243,8 @@ pub fn get_database_tables(conn: &mut PooledConn, database_name: &str, table_nam
         Ok(result) => {
             Some(result)
         }
-        Err(_) => {
-            None
+        Err(error) => {
+            panic!("error: {:?}",error)
         }
     }
 }
@@ -254,8 +260,8 @@ pub fn get_database_table_fields(conn: &mut PooledConn, database_name: &str, tab
         Ok(result) => {
             Some(result)
         }
-        Err(_) => {
-            None
+        Err(error) => {
+            panic!("error: {:?}",error)
         }
     }
 }
