@@ -1,4 +1,4 @@
-# codegen-rust
+# codegen
 Rust 实现的代码生成器
 
 ## 起步 Getting started
@@ -16,7 +16,7 @@ Rust 实现的代码生成器
 
 ## 反馈 Feedback
 
-[Issues](https://github.com/godcheese/codegen-rust/issues)
+[Issues](https://github.com/godcheese/codegen/issues)
 
 ## 捐赠 Donation
 
@@ -25,4 +25,4 @@ Rust 实现的代码生成器
 [Paypal Me](https://www.paypal.me/godcheese)
 
 ## 协议 License
-[MIT License](https://github.com/godcheese/codegen-rust/blob/main/LICENSE) Copyright (c) 2023 godcheese
+[MIT License](https://github.com/godcheese/codegen/blob/main/LICENSE) Copyright (c) 2023 godcheese
