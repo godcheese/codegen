@@ -1,11 +1,10 @@
+use clap::Parser;
+use mysql::{params, PooledConn};
+use mysql::prelude::Queryable;
 use std::{env, fs};
 use std::fs::{File, OpenOptions};
 use std::io::{BufReader, Write};
 use std::path::Path;
-
-use clap::Parser;
-use mysql::{params, PooledConn};
-use mysql::prelude::Queryable;
 use tera::{Context, Tera};
 
 use crate::model::{Config, DatabaseInfo, DatabaseTable, DatabaseTableField, TemplateConfig, TemplateItem, TemplateVar};
@@ -223,7 +222,7 @@ pub fn get_database_info(conn: &mut PooledConn) -> Option<DatabaseInfo> {
 
 /// get_database_tables
 pub fn get_database_tables(conn: &mut PooledConn, database_name: &str, table_name_vec: &Vec<String>) -> Option<Vec<DatabaseTable>> {
-    let table_name_vec2 :Vec<String>= table_name_vec.iter().map(|table_name| format!("'{table_name}'")).collect();
+    let table_name_vec2: Vec<String> = table_name_vec.iter().map(|table_name| format!("'{table_name}'")).collect();
     let query_result;
     if table_name_vec2.len() > 0 {
         let table_names = table_name_vec2.join(",");
@@ -244,7 +243,7 @@ pub fn get_database_tables(conn: &mut PooledConn, database_name: &str, table_nam
             Some(result)
         }
         Err(error) => {
-            panic!("error: {:?}",error)
+            panic!("error: {:?}", error)
         }
     }
 }
@@ -261,7 +260,7 @@ pub fn get_database_table_fields(conn: &mut PooledConn, database_name: &str, tab
             Some(result)
         }
         Err(error) => {
-            panic!("error: {:?}",error)
+            panic!("error: {:?}", error)
         }
     }
 }
