@@ -68,14 +68,13 @@ jobs:
         run: |
           mkdir dist temp
           cp -r LICENSE README.md config.yaml ./templates/ ./scripts/ temp/
-          cd temp
           version="${{ steps.get_version.outputs.VERSION }}"
           if [ "${{ matrix.build }}" = "windows" ]; then
-            cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}.exe" ./
-            7z a -r "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" ./
+            cp "./target/${{ matrix.target }}/release/${{ env.BIN_NAME }}.exe" ./temp/
+            7z a -r "./dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" ./temp/*
           else
-            cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" ./
-            tar -czf "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" ./
+            cp "./target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" ./temp/
+            tar -czf "./dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" -C ./ temp
           fi
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
