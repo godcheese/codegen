@@ -1,0 +1,88 @@
+name: Build Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  CARGO_TERM_COLOR: always
+  BIN_NAME: "codegen"
+
+jobs:
+  build:
+    name: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build: [linux, macos, windows]
+        include:
+          - build: linux
+            os: ubuntu-20.04
+            rust: stable
+            target: x86_64-unknown-linux-musl
+            release-name: x86_64-linux.tar.gz
+          - build: macos
+            os: macos-12
+            rust: stable
+            target: x86_64-apple-darwin
+            release-name: x86_64-macos.tar.gz
+          - build: windows
+            os: windows-2019
+            rust: stable-x86_64-msvc
+            target: x86_64-pc-windows-msvc
+            release-name: x86_64-windows.7z
+      fail-fast: false
+
+    steps:
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+          profile: minimal
+          override: true
+          target: ${{ matrix.target }}
+
+      - name: Install dependencies
+        if: matrix.build == 'linux'
+        run: sudo apt-get -y install musl-tools
+
+      - name: Build binary
+        run: cargo build --verbose --release --target ${{ matrix.target }}
+        env:
+          RUST_BACKTRACE: 1
+
+      - name: Strip binary (linux and macos)
+        if: matrix.build == 'linux' || matrix.build == 'macos'
+        run: strip "target/${{ matrix.target }}/release/${{ BIN_NAME }}"
+
+      - name: Build Release
+        shell: bash
+        run: |
+          mkdir dist
+          cp -r LICENSE README.md config.yaml ./templates/ ./scripts/ dist/
+          cd dist
+          if [ "${{ matrix.build }}" = "windows" ]; then
+            cp "../target/${{ matrix.target }}/release/${{ BIN_NAME }}.exe" ./
+            7z a -r "${{ BIN_NAME }}-${{ steps.get_version.outputs.VERSION }}-${{ matrix.release-name }}" ./  
+          else
+            cp "../target/${{ matrix.target }}/release/${{ BIN_NAME }}" ./
+            tar -czf "${{ BIN_NAME }}-${{ steps.get_version.outputs.VERSION }}-${{ matrix.release-name }}" *
+          fi
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          name: ${{ steps.get_version.outputs.VERSION }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: "dist/**"
