@@ -70,10 +70,10 @@ jobs:
           cp -r LICENSE README.md config.yaml ./templates/ ./scripts/ temp/
           cd temp
           if [ "${{ matrix.build }}" = "windows" ]; then
-            cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}.exe" ./temp
+            cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}.exe" ./
             7z a -r "../dist/${{ env.BIN_NAME }}-${{ steps.get_version.outputs.VERSION }}-${{ matrix.release-name }}" *
           else
-            cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" ./temp
+            cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" ./
             tar -czf "../dist/${{ env.BIN_NAME }}-${{ steps.get_version.outputs.VERSION }}-${{ matrix.release-name }}" *
           fi
       - name: Upload Release Assets
