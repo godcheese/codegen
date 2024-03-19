@@ -72,10 +72,10 @@ jobs:
           version="${{ steps.get_version.outputs.VERSION }}"
           if [ "${{ matrix.build }}" = "windows" ]; then
             cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}.exe" ./
-            7z a -r "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" *
+            7z a -r "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" ./*
           else
             cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" ./
-            tar -czf "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" *
+            tar -czf "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" ./*
           fi
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
