@@ -74,7 +74,7 @@ jobs:
             7z a -r "./dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" ./temp/*
           else
             cp "./target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" ./temp/
-            tar -czf "./dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" -C ./ temp
+            tar -czf "./dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" -C ./temp .
           fi
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
