@@ -70,10 +70,10 @@ jobs:
           cp -r LICENSE README.md config.yaml ./templates/ ./scripts/ temp/
           if [ "${{ matrix.build }}" = "windows" ]; then
             cp "./target/${{ matrix.target }}/release/${{ env.BIN_NAME }}.exe" ./temp
-            7z a -r "./dist/${{ env.BIN_NAME }}-${{ steps.get_version.outputs.VERSION }}-${{ matrix.release-name }}" ./temp  
+            7z a -r "./dist/${{ env.BIN_NAME }}-${{ steps.get_version.outputs.VERSION }}-${{ matrix.release-name }}" ./temp/  
           else
             cp "./target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" ./temp
-            tar -czf "./dist/${{ env.BIN_NAME }}-${{ steps.get_version.outputs.VERSION }}-${{ matrix.release-name }}" ./temp
+            tar -czf "./dist/${{ env.BIN_NAME }}-${{ steps.get_version.outputs.VERSION }}-${{ matrix.release-name }}" ./temp/
           fi
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
