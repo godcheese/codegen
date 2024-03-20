@@ -69,14 +69,14 @@ jobs:
           mkdir -p dist temp
           cp -r LICENSE README.md config.yaml ./templates ./scripts temp/
           cd temp
-          version="${{ env.RELEASE_VERSION }}"
+          version="${{ github.ref_name }}"
           echo "$version"
           if [ "${{ matrix.build }}" = "windows" ]; then
             cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}.exe" ./
-            7z a -r "../dist/${{ env.BIN_NAME }}-${{ env.RELEASE_VERSION }}-${{ matrix.release-name }}" *
+            7z a -r "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" *
           else
             cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" ./
-            tar czf "../dist/${{ env.BIN_NAME }}-${{ env.RELEASE_VERSION }}-${{ matrix.release-name }}" *
+            tar czf "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" *
           fi
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
