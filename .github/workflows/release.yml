@@ -94,4 +94,7 @@ jobs:
           draft: false
           prerelease: false
           generate_release_notes: true
+          body: ${{ steps.release.outputs.body }}
           files: "dist/**"
+
+
