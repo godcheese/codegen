@@ -31,7 +31,7 @@ jobs:
             os: windows-2019
             rust: stable-x86_64-msvc
             target: x86_64-pc-windows-msvc
-            release-name: x86_64-windows.7z
+            release-name: ${{ env.BIN_NAME }}-x86_64-windows.7z
       fail-fast: false
 
     steps:
@@ -74,7 +74,7 @@ jobs:
             7z a -r "./dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" ./temp/*
           else
             cp "./target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" ./temp/
-            tar -czf "./dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" -C ./temp .
+            tar -czf "./dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" -C ./temp *
           fi
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
