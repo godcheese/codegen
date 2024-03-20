@@ -75,7 +75,7 @@ jobs:
             cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}.exe" ./
             7z a -r "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" *
           else
-            cp "./target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" ./
+            cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" ./
             tar czf "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" *
           fi
       - name: Upload Release Assets
