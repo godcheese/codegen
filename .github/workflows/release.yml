@@ -85,6 +85,7 @@ jobs:
             cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" ./
             tar czf "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" *
           fi
+
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -93,7 +94,6 @@ jobs:
           name: ${{ steps.tagName.outputs.tag }}
           draft: false
           prerelease: false
-          generate_release_notes: true
           body: ${{ steps.changelog.outputs.body }}
           files: "dist/**"
 
