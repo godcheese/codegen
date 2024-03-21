@@ -22,17 +22,22 @@ jobs:
             os: ubuntu-20.04
             rust: stable
             target: x86_64-unknown-linux-musl
-            release-name: x86_64-linux.tar.gz
+            release-file-suffix: x86_64-linux.tar.gz
           - build: macos
             os: macos-12
             rust: stable
             target: x86_64-apple-darwin
-            release-name: x86_64-macos.tar.gz
+            release-file-suffix: x86_64-macos.tar.gz
+          - build: macos-arm
+            os: macos-13-xlarge
+            rust: stable
+            target: aarch64-apple-darwin
+            release-file-suffix: arm64-macos.tar.gz
           - build: windows
             os: windows-2019
             rust: stable-x86_64-msvc
             target: x86_64-pc-windows-msvc
-            release-name: x86_64-windows.7z
+            release-file-suffix: x86_64-windows.7z
       fail-fast: false
 
     steps:
@@ -63,7 +68,7 @@ jobs:
           RUST_BACKTRACE: 1
 
       - name: Strip binary (linux and macos)
-        if: matrix.build == 'linux' || matrix.build == 'macos'
+        if: matrix.build == 'linux' || matrix.build == 'macos' || matrix.build == 'macos-arm'
         run: strip "target/${{ matrix.target }}/release/${{ env.BIN_NAME }}"
 
       - name: Generate Changelog
@@ -81,10 +86,10 @@ jobs:
           version="${{ steps.tagName.outputs.tag }}"
           if [ "${{ matrix.build }}" = "windows" ]; then
             cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}.exe" ./
-            7z a -r "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" *
+            7z a -r "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-file-suffix }}" *
           else
             cp "../target/${{ matrix.target }}/release/${{ env.BIN_NAME }}" ./
-            tar czf "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-name }}" *
+            tar czf "../dist/${{ env.BIN_NAME }}-$version-${{ matrix.release-file-suffix }}" *
           fi
 
       - name: Upload Release Assets

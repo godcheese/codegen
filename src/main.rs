@@ -31,7 +31,6 @@ struct Cli {
     /// Template path, example: default
     #[arg(short = 'p', long = "template")]
     template: Option<String>,
-
 }
 
 const SPLIT_PAT: &str = ",";
