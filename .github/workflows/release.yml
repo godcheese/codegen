@@ -16,28 +16,29 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        build: [macos-arm]
+        build: [linux, macos, macos-arm, windows]
         include:
-#          - build: linux
-#            os: ubuntu-20.04
-#            rust: stable
-#            target: x86_64-unknown-linux-musl
-#            release-file-suffix: x86_64-linux.tar.gz
-#          - build: macos
-#            os: macos-12
-#            rust: stable
-#            target: x86_64-apple-darwin
-#            release-file-suffix: x86_64-macos.tar.gz
+          - build: linux
+            os: ubuntu-20.04
+            run: sudo apt-get -y install musl-tools
+            rust: stable
+            target: x86_64-unknown-linux-musl
+            release-file-suffix: x86_64-linux.tar.gz
+          - build: macos
+            os: macos-12
+            rust: stable
+            target: x86_64-apple-darwin
+            release-file-suffix: x86_64-macos.tar.gz
           - build: macos-arm
-            os: macos-13-xlarge
+            os: flyci-macos-large-latest-m1
             rust: stable
             target: aarch64-apple-darwin
             release-file-suffix: arm64-macos.tar.gz
-#          - build: windows
-#            os: windows-2019
-#            rust: stable-x86_64-msvc
-#            target: x86_64-pc-windows-msvc
-#            release-file-suffix: x86_64-windows.7z
+          - build: windows
+            os: windows-2019
+            rust: stable-x86_64-msvc
+            target: x86_64-pc-windows-msvc
+            release-file-suffix: x86_64-windows.7z
       fail-fast: false
 
     steps:
@@ -59,8 +60,8 @@ jobs:
           target: ${{ matrix.target }}
 
       - name: Install prerequisites
-        if: matrix.build == 'linux'
-        run: sudo apt-get -y install musl-tools
+        if: matrix.run != ''
+        run: ${{ matrix.run }}
 
       - name: Build binary
         run: cargo build --verbose --release --target ${{ matrix.target }}
