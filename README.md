@@ -1,7 +1,7 @@
 # codegen
 Rust 实现的代码生成器
 
-![Release](https://github.com/godcheese/codegen/actions/workflows/release.yml/badge.svg?event=push)
+[![Release](https://github.com/godcheese/codegen/actions/workflows/release.yml/badge.svg?event=push)](https://github.com/godcheese/codegen/releases)
 
 ## 起步 Getting started
 
