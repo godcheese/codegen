@@ -1,5 +1,4 @@
 /target
 /.idea
 *.lock
-/public/storage/local
 .env
