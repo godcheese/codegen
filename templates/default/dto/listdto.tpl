@@ -20,6 +20,6 @@ public class List{{ table_name | upper_camel }}DTO implements Serializable {
     /**
      * {{ field.column_comment }}
      */
-    private {% if field.data_type == "bigint" %}Long{% elif field.data_type == "int" %}Integer{% elif field.data_type == "int" %}Integer{% elif field.data_type == "tinyint" %}Integer{% elif field.data_type == "datetime" %}LocalDateTime{% elif field.data_type == "varchar" %}String{% endif %} {{ field.column_name | lower_camel }};
+    private {% if field.data_type == "bigint" %}Long{% elif field.data_type == "int" %}Integer{% elif field.data_type == "int" %}Integer{% elif field.data_type == "tinyint" %}Integer{% elif field.data_type == "datetime" %}LocalDateTime{% elif field.data_type == "varchar" or field.data_type == "text" or field.data_type == "mediumtext" or field.data_type == "longtext" %}String{% elif field.data_type == "double" %}Double{% endif %} {{ field.column_name | lower_camel }};
 {% endfor %}
 }

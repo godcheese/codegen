@@ -26,8 +26,8 @@ public class {{ table_name | upper_camel }}Entity implements Serializable {
     /**
      * {{ field.column_comment }}
      */
- {% if field.column_key == "PRI" %}   @TableId(value = "{{ field.column_name }}", type = IdType.ASSIGN_UUID){% else %}   @TableField("{{ field.column_name }}"){% endif %}
-    private {% if field.data_type == "bigint" %}Long{% elif field.data_type == "int" %}Integer{% elif field.data_type == "int" %}Integer{% elif field.data_type == "tinyint" %}Integer{% elif field.data_type == "datetime" %}LocalDateTime{% elif field.data_type == "varchar" %}String{% endif %} {{ field.column_name | lower_camel }};
+ {% if field.column_key == "PRI" %}   @TableId(value = "{{ field.column_name }}", type = IdType.ASSIGN_ID){% else %}   @TableField("{{ field.column_name }}"){% endif %}
+    private {% if field.data_type == "bigint" %}Long{% elif field.data_type == "int" %}Integer{% elif field.data_type == "int" %}Integer{% elif field.data_type == "tinyint" %}Integer{% elif field.data_type == "datetime" %}LocalDateTime{% elif field.data_type == "varchar" or field.data_type == "text" or field.data_type == "mediumtext" or field.data_type == "longtext" %}String{% elif field.data_type == "double" %}Double{% endif %} {{ field.column_name | lower_camel }};
 {% endfor %}
 }
 

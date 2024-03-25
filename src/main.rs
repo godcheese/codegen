@@ -122,6 +122,7 @@ fn main() {
                 for temp_item in item_vec {
                     let template_output_path = temp_item.output_path.to_string();
                     let mut template_output_filename = temp_item.output_filename;
+                    template_output_filename = template_output_filename.replace("/", separator);
                     template_output_filename = format!("{template_output_path}{separator}{template_output_filename}");
                     println!("Code output filename: {template_output_filename}");
                     let template_output_path_exists = Path::new(&template_output_path).exists();
@@ -136,6 +137,7 @@ fn main() {
                         temp_file = File::create(template_output_filename).expect("Code file output failed.");
                     }
                     let mut template_filename = temp_item.template_filename;
+                    template_filename = template_filename.replace("/", separator);
                     template_filename = format!("{template_path}{separator}{template_filename}");
                     let template_output_content = tera.render(&template_filename, &context).unwrap();
                     temp_file.write_all(template_output_content.as_bytes()).expect("Code string write failed.");
